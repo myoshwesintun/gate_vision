@@ -10,5 +10,5 @@ cd setup
 cd ..
 ./venv/Scripts/python gate_vision.py
 
-Next time:
+Next time, open terminal in gate_vision and execute the following command.
 ./venv/Scripts/python gate_vision.py
