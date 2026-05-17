@@ -1,0 +1,13 @@
+Install FiraCode font by selecting all ttf in ./setup/Fira_Code_v6.2 > right click > install
+
+Open terminal in gate_vision and execute the following commands. (1st time only)
+
+py -3.8 -m venv venv
+./venv/Scripts/python -m pip install --upgrade pip
+cd setup
+../venv/Scripts/pip install -r requirements.txt
+cd ..
+./venv/Scripts/python gate_vision.py
+
+Next time:
+./venv/Scripts/python gate_vision.py
