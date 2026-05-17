@@ -4,6 +4,7 @@ Open terminal in gate_vision and execute the following commands. (1st time only)
 
 py -3.8 -m venv venv
 ./venv/Scripts/python -m pip install --upgrade pip
+./venv/Scripts/pip install paddlepaddle==2.4.2 -f https://www.paddlepaddle.org.cn/whl/windows/mkl/noavx/stable.html
 cd setup
 ../venv/Scripts/pip install -r requirements.txt
 cd ..
