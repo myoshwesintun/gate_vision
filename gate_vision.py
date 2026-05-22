@@ -107,6 +107,11 @@ class GateVisionApp:
     # THREAD 2 — YOLO DETECTION
     def yolo_processing_thread(self):
         while self.running:
+            # Run only when the gate is closed.
+            if self._barrier_lock.locked():
+                time.sleep(0.1)
+                continue
+
             # Skip while OCR is still busy or already triggered
             if self._ocr_busy.is_set() or self._ocr_trigger.is_set():
                 time.sleep(0.05)
@@ -181,7 +186,7 @@ class GateVisionApp:
     # Strip spaces and non-alphanumeric chars, and change to uppercase
     @staticmethod
     def _preprocess_plate(text: str) -> str:
-        text.upper()
+        textt = text.upper()
         match = re.search(r'\d{1}[A-Z]-?\d{4}', text)
         if match:
             text = match.group(0)
