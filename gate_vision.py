@@ -187,7 +187,7 @@ class GateVisionApp:
     @staticmethod
     def _preprocess_plate(text: str) -> str:
         textt = text.upper()
-        match = re.search(r'\d{1}[A-Z]-?\d{4}', text)
+        match = re.search(r'[A-Z0-9][A-Z]-?\d{4}', text)
         if match:
             text = match.group(0)
         return re.sub(r'[^A-Z0-9\-]', '', text)
