@@ -186,7 +186,7 @@ class GateVisionApp:
     # Strip spaces and non-alphanumeric chars, and change to uppercase
     @staticmethod
     def _preprocess_plate(text: str) -> str:
-        textt = text.upper()
+        text = text.upper()
         match = re.search(r'[A-Z0-9][A-Z]-?\d{4}', text)
         if match:
             text = match.group(0)
@@ -253,7 +253,7 @@ class GateVisionApp:
                 f"Detected Time : {now}"
             )
             self.info_text.configure(text=info_str)
-            print(f"\n[UNREGISTERED VEHICLE: {plate_text}]")
+            print(f"\n[UNREGISTERED VEHICLE: {plate_text}] {now}")
             self.set_alert_state(True)
 
     # SERIAL SENSOR
@@ -359,11 +359,11 @@ class GateVisionApp:
         self.window.after(0, _ui_opening)
         for i in range(110, 64, -1):
             #self.pi.set_PWM_dutycycle(self.servo_pin, i)
-            time.sleep(0.01)
+            time.sleep(0.03)
         self.window.after(0, lambda: self.barrier_label.configure(text="Barrier is opened.", text_color="#008000"))
         print(f"\nAction: Barrier Opened [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]")
         self._close_early.clear()
-        self._close_early.wait(timeout=5)
+        self._close_early.wait(timeout=7)
         threading.Thread(target=self.close_barrier, daemon=True).start()
 
     def close_barrier(self):
@@ -374,7 +374,7 @@ class GateVisionApp:
         try:
             for i in range(65, 111, 1):
                 #self.pi.set_PWM_dutycycle(self.servo_pin, i)
-                time.sleep(0.01)
+                time.sleep(0.03)
             self.window.after(0, lambda: self.barrier_label.configure(text="Barrier is closed.", text_color="#CC0000"))
             print(f"\nAction: Barrier Closed [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]")
             self.maximum_speed = 0
