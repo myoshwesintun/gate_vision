@@ -241,7 +241,7 @@ class GateVisionApp:
             )
             self.info_text.configure(text=info_str)
 
-            print(f"\n[GATE OPENING FOR 5 SECONDS] {now}")
+            print(f"\n[GATE OPENING FOR 10 SECONDS] {now}")
             self.set_alert_state(False)
             threading.Thread(target=self.open_barrier, daemon=True).start()
 
@@ -363,7 +363,7 @@ class GateVisionApp:
         self.window.after(0, lambda: self.barrier_label.configure(text="Barrier is opened.", text_color="#008000"))
         print(f"\nAction: Barrier Opened [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]")
         self._close_early.clear()
-        self._close_early.wait(timeout=7)
+        self._close_early.wait(timeout=10)
         threading.Thread(target=self.close_barrier, daemon=True).start()
 
     def close_barrier(self):
