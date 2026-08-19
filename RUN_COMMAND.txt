@@ -1,16 +1,16 @@
 FIRST TIME SETUP
 ================
-cd Gate_Vision
+cd gate_vision
 chmod +x install_pi.sh run_gate_vision.sh
 ./install_pi.sh
 
 NORMAL RUN
 ==========
-cd Gate_Vision
+cd gate_vision
 ./run_gate_vision.sh
 
 OPTIONAL SYSTEM CHECK
 =====================
-cd Gate_Vision
+cd gate_vision
 source venv/bin/activate
 python check_system.py
