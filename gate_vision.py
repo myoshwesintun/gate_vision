@@ -366,28 +366,29 @@ class GateVisionApp:
             return ""
 
     # Strip spaces and non-alphanumeric chars, and change to uppercase
+    FIXES1_TRANS = str.maketrans('40815762', 'ADBISTGZ')
+    FIXES2_TRANS = str.maketrans('ADBISTGZ', '40815762')
+
     @staticmethod
     def _preprocess_plate(text: str) -> str:
         text = text.upper()
         
         # Changed [A-Z] to [A-Z0-9] at index 1 so the regex catches the OCR mistake
-        match = re.search(r'[A-Z0-9]{2}-?\d{4}', text)
+        match = re.search(r'[A-Z0-9]{2}-?[A-Z0-9]{4}', text)
         
         if match:
-            plate = list(match.group(0))
-            fixes1 = {'4': 'A', '0': 'D', '8': 'B', '1': 'I', '5': 'S'}
-            fixes2 = {'A': '4', 'D': '0', 'B': '8', 'I': '1', 'S': '5'}
+            plate = match.group(0)
 
-            if plate[1] in fixes1:
-                plate[1] = fixes1[plate[1]]
-
-            if plate[0] in fixes2:
-                plate[0] = fixes2[plate[0]]
-                                
-            text = "".join(plate)
-            
-        return re.sub(r'[^A-Z0-9\-]', '', text)
-
+            # Apply translations and return immediately
+            return (
+                plate[0].translate(FIXES2_TRANS) + 
+                plate[1].translate(FIXES1_TRANS) + 
+                plate[2:].translate(FIXES2_TRANS)
+            )
+                    
+        # Fallback: safely return the original uppercase text if no plate is found
+        # Alternatively, you could return an empty string "" depending on your needs.
+        return text
 
     # GUI — VIDEO LOOP
     def update_gui_loop(self):
