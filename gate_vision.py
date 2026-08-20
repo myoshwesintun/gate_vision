@@ -61,6 +61,9 @@ BARRIER_OPEN_HOLD_S = 10.0
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FILES_DIR = os.path.join(BASE_DIR, "files")
 
+FIXES1_TRANS = str.maketrans('40815762', 'ADBISTGZ')
+FIXES2_TRANS = str.maketrans('ADBISTGZ', '40815762')
+
 class GateVisionApp:
     def __init__(self, window):
         self.window = window
@@ -366,9 +369,20 @@ class GateVisionApp:
             return ""
 
     # Strip spaces and non-alphanumeric chars, and change to uppercase
-    FIXES1_TRANS = str.maketrans('40815762', 'ADBISTGZ')
-    FIXES2_TRANS = str.maketrans('ADBISTGZ', '40815762')
-
+    """
+    This method corrects optical character recognition (OCR) errors on license plates.
+    It first converts the input string to uppercase for uniform processing.
+    A regular expression searches for a specific license plate format.
+    The pattern isolates two alphanumerics, an optional hyphen, and four more.
+    If the regex finds a valid match, we begin fixing the OCR mistakes.
+    The matched string is sliced into three separate positional parts.
+    Index 0 is translated using FIXES2_TRANS to ensure it is a letter.
+    Index 1 is translated using FIXES1_TRANS to ensure it is a number.
+    The rest of the string uses FIXES2_TRANS to ensure they are letters.
+    The .translate() method applies these rules instantly using C-optimizations.
+    Finally, the corrected string slices are concatenated and returned.
+    If no valid plate is detected, the raw uppercase text is safely returned.
+    """
     @staticmethod
     def _preprocess_plate(text: str) -> str:
         text = text.upper()
@@ -606,7 +620,6 @@ class GateVisionApp:
                          start=205, extent=-active_extent,
                          style="arc", outline=color, width=12)
 
-        # Tick marks and numeric labels
         tick_step = 20
         for s in range(0, int(SPEEDOMETER_MAX_KMH) + 1, tick_step):
             ang = math.radians(205 - (s / SPEEDOMETER_MAX_KMH) * 230)
